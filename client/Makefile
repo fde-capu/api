@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:38:52 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 12:43:17 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/23 14:07:14 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ ifndef OUTPUT
 endif
 
 NAME	=	api_client
-ARGS	=	0.0.0.0
+ARGS	=	0.0.0.0:8001
 SRCS	=	api_client.c
 HEAD	=	Makefile api_client.h
 SHELL	=	/bin/sh

@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:14 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 14:04:26 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 14:08:21 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ int main(int argc, char *argv[])
 	recv(client_socket, &response, sizeof(response), 0);
 	printf("Got from server: %s\n", response);
 	close(client_socket);
+
+	ft_strfree2d(addr_and_port);
 	return 0;
 }
