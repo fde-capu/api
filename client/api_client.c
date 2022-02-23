@@ -6,19 +6,10 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:14 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 16:48:14 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:00:01 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <arpa/inet.h> // to convert network address
-#include "../libft/libft.h"
 #include "api_client.h"
 
 int die(char *message, int return_code, char **to_free)
@@ -43,7 +34,39 @@ bool validate(int argc, char **argv, char **address, int *port)
 	return true;
 }
 
-void shell()
+void shell_error(char *message)
+{
+	printf("%s\n", message);
+	return ;
+}
+
+void call_server(char *line, char *address, int port)
+{
+	struct sockaddr_in remote_address;
+	char response[MAX_RESPONSE];
+	int client_socket;
+
+	printf(CLIENT_OUT "%s\n", line);
+	client_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if (client_socket == -1)
+		return shell_error(ERROR SOCKET_CREATION_FAIL);
+	remote_address.sin_family = AF_INET;
+	remote_address.sin_port = htons(port);
+	if (inet_aton(address, (struct in_addr *)&remote_address.sin_addr.s_addr) == 0)
+		return shell_error(ERROR INVALID_ADDRESS);
+	if (connect(client_socket, (struct sockaddr *)&remote_address, sizeof(remote_address)) == -1)
+		return shell_error(ERROR CONNECTION_FAILED);
+	if (send(client_socket, line, strlen(line), 0) == -1)
+		return shell_error(ERROR SEND_FAILED);
+	if (recv(client_socket, &response, sizeof(response), 0) == -1)
+		return shell_error(ERROR RECV_FAILED);
+	if (close(client_socket) == -1)
+		return shell_error(ERROR CLOSE_SOCKET_FAILED);
+	printf(SERVER_IN "%s\n", response);
+	return ;
+}
+
+void shell(char *address, int port)
 {
 	FILE *stream;
 	char *line = NULL;
@@ -51,21 +74,17 @@ void shell()
 	ssize_t nread;
 
 	printf(SHELL_MODE "\n");
-
 	stream = fdopen(0, "r");
 	if (stream == NULL)
-	{
-		perror("fopen");
 		exit(EXIT_FAILURE);
-	}
-
 	while ((nread = getline(&line, &len, stream)) != -1)
 	{
-		fwrite(line, nread, 1, stdout);
+		call_server(line, address, port);
+		//		fwrite(line, nread, 1, stdout);
 	}
-
 	free(line);
 	fclose(stream);
+	return ;
 }
 
 int main(int argc, char **argv)
@@ -76,37 +95,9 @@ int main(int argc, char **argv)
 	if (!validate(argc, argv, &address, &port))
 		return die(ERROR INVALID_ARGUMENTS, 42, &address);
 
-	printf("address: %s, port: %i\n", address, port);
+	call_server("HI", address, port);
 
-	int client_socket;
-	client_socket = socket(AF_INET, SOCK_STREAM, 0);
-	if (client_socket == -1)
-		return die(ERROR SOCKET_CREATION_FAIL, 42, &address);
+	shell(address, port);
 
-	struct sockaddr_in remote_address;
-	remote_address.sin_family = AF_INET;
-	remote_address.sin_port = htons(port);
-
-	if (inet_aton(address, (struct in_addr *)&remote_address.sin_addr.s_addr) == 0)
-		return die(ERROR INVALID_ADDRESS, 42, &address);
-
-	if (connect(client_socket, (struct sockaddr *)&remote_address, sizeof(remote_address)) == -1)
-		return die(ERROR CONNECTION_FAILED, 42, &address);
-
-	char request[] = "GET / HTTP/1.1\n\n";
-	char response[4096];
-
-	if (send(client_socket, request, sizeof(request), 0) == -1)
-		return die(ERROR SEND_FAILED, 42, &address);
-
-	if (recv(client_socket, &response, sizeof(response), 0) == -1)
-		return die(ERROR RECV_FAILED, 42, &address);
-
-	printf("Got from server:\n%s", response);
-
-	if (close(client_socket) == -1)
-		return die(ERROR CLOSE_SOCKET_FAILED, 42, &address);
-
-	shell();
 	return 0;
 }

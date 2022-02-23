@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:44:36 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 14:20:39 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/23 18:25:19 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ ifndef OUTPUT
 endif
 
 NAME	=	api_server
-ARGS	=	
+ARGS	=	8001
 SRCS	=	api_server.c
-HEAD	=	Makefile
+HEAD	=	Makefile api_server.h
 SHELL	=	/bin/sh
 CC		=	cc -L../libft
 CCFLAGS	=	-Wall -Werror -Wextra -g
@@ -46,11 +46,11 @@ vf:			all
 	$(VAL) $(VALFLAG) ./$(NAME)
 t:			all
 	echo "# $(NAME) $(ARGS)"
-	./$(NAME)
+	./$(NAME) $(ARGS)
 v:			all
 	$(VAL) ./$(NAME)
 start:		stop all
 	echo "# $(NAME) $(ARGS) &"
-	./$(NAME) &
+	./$(NAME) $(ARGS) &
 stop:
 	-pkill api_server

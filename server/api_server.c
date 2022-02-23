@@ -6,33 +6,40 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:15 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 14:18:23 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:24:54 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <unistd.h>
+#include "api_server.h"
 
-int main()
+int die(char *message, int return_code)
 {
-	FILE *html_data;
-	html_data = fopen("json-sample.json", "r");
-	char response_data[1024];
-	fgets(response_data, 1024, html_data);
-	char http_header[2048] = "HTTP/1.1 200 OK\nConnection: close\nContent-Length: 49\n\n";
-	strcat(http_header, response_data);
-//	printf(">%s<", http_header);
+	printf("%s\n", message);
+	return return_code;
+}
+
+int main(int argc, char **argv)
+{
+	char *reg = "\\d+";
+	if (!validate_args_regex(argc, argv, 0, 3, reg))
+		return die(ERROR INVALID_ARGUMENTS, 1);
+
+//	FILE *html_data;
+//	html_data = fopen("json-sample.json", "r");
+//	char response_data[MAX_RESPONSE];
+//	fgets(response_data, 1024, html_data);
+
+	char *response_data = ft_str("Hello, world!");
+
+	char *http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 49\n\n");
+	http_header = ft_strcatxl(http_header, response_data);
+	printf("-->%s<--", http_header);
 
 	int server_socket;
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in server_address;
 	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(8001);
+	server_address.sin_port = htons(ft_atoi(argv[1]));
 	server_address.sin_addr.s_addr = INADDR_ANY;
 	bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 	listen(server_socket, 1);
