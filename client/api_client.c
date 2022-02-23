@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:14 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 13:13:51 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 13:24:47 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 int main(int argc, char *argv[])
 {
-	char *valid_arguments_regex_pipesv = "\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?|\\w";
+	char *valid_arguments_regex_pipesv = "\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?";
 	if (!validate_args_regex(argc, argv, 2, 2, valid_arguments_regex_pipesv))
 		return ft_print2_and_return_int(ERROR, INVALID_ARGUMENTS, 42);
 
