@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:38:52 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 14:07:14 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/23 14:20:48 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ rt:			re t
 vf:			all
 	$(VAL) $(VALFLAG) ./$(NAME) $(ARGS)
 t:			all
-	echo -e $(NAME) $(ARGS)
+	echo "$(NAME) $(ARGS)"
 	./$(NAME) $(ARGS)
 v:			all
 	$(VAL) ./$(NAME) $(ARGS)

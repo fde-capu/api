@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:44:36 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 12:26:41 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/23 14:20:39 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ ifndef OUTPUT
 endif
 
 NAME	=	api_server
+ARGS	=	
 SRCS	=	api_server.c
 HEAD	=	Makefile
 SHELL	=	/bin/sh
@@ -44,10 +45,12 @@ rt:			re t
 vf:			all
 	$(VAL) $(VALFLAG) ./$(NAME)
 t:			all
+	echo "# $(NAME) $(ARGS)"
 	./$(NAME)
 v:			all
 	$(VAL) ./$(NAME)
 start:		stop all
+	echo "# $(NAME) $(ARGS) &"
 	./$(NAME) &
 stop:
 	-pkill api_server

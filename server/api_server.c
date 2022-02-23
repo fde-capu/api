@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:15 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 11:45:16 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 14:18:23 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main()
 	fgets(response_data, 1024, html_data);
 	char http_header[2048] = "HTTP/1.1 200 OK\nConnection: close\nContent-Length: 49\n\n";
 	strcat(http_header, response_data);
-	printf(">%s<", http_header);
+//	printf(">%s<", http_header);
 
 	int server_socket;
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
