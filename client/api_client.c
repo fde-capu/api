@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:14 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 15:49:01 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:48:14 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,31 @@ bool validate(int argc, char **argv, char **address, int *port)
 	(void)address;
 	(void)port;
 	return true;
+}
+
+void shell()
+{
+	FILE *stream;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t nread;
+
+	printf(SHELL_MODE "\n");
+
+	stream = fdopen(0, "r");
+	if (stream == NULL)
+	{
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	while ((nread = getline(&line, &len, stream)) != -1)
+	{
+		fwrite(line, nread, 1, stdout);
+	}
+
+	free(line);
+	fclose(stream);
 }
 
 int main(int argc, char **argv)
@@ -82,5 +107,6 @@ int main(int argc, char **argv)
 	if (close(client_socket) == -1)
 		return die(ERROR CLOSE_SOCKET_FAILED, 42, &address);
 
+	shell();
 	return 0;
 }

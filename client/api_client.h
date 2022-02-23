@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 12:42:33 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 15:27:50 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:47:36 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 # define CLOSE_SOCKET_FAILED "Could not close the socket!"
 # define INVALID_ADDRESS "Invalid address."
 # define SOCKET_CREATION_FAIL "Socket creation failed."
+# define SHELL_MODE "Entering shell mode:"
 
 #endif
