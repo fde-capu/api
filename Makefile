@@ -10,6 +10,10 @@
 #                                               #
 # ********************************************* #
 
+ifndef OUTPUT
+.SILENT:
+endif
+
 all:	stop libft api_server api_client
 libft:
 	cd libft && make
