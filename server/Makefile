@@ -1,14 +1,18 @@
-# ********************************************* #
-#                                               #
-#                      :|:||||||:|||:|:||:||::  #
-#  Makefile            |:|:|::|::||||::||:|:::  #
-#                      |::::|||:::||::::::|:||  #
-#                                               #
-#                                               #
-#  C20220222151745 |:|:::                       #
-#  U20220222162437 :::|||                       #
-#                                               #
-# ********************************************* #
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/23 11:44:36 by fde-capu          #+#    #+#              #
+#    Updated: 2022/02/23 12:26:41 by fde-capu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+ifndef OUTPUT
+.SILENT:
+endif
 
 NAME	=	api_server
 SRCS	=	api_server.c
@@ -26,7 +30,7 @@ VALFLAG	=	--tool=memcheck \
 			--show-reachable=yes
 all:		libft $(NAME)
 libft:
-	cd ../libft && make && cd -
+	cd ../libft && $(MAKE) && cd -
 $(NAME):	$(OBJS)
 	$(CC) $(CCFLAGS) $(OBJS) -o $(NAME) $(CCLINKS)
 $(OBJS):	%.o : %.c $(HEAD)
@@ -43,7 +47,7 @@ t:			all
 	./$(NAME)
 v:			all
 	$(VAL) ./$(NAME)
-start:		all
+start:		stop all
 	./$(NAME) &
 stop:
 	-pkill api_server

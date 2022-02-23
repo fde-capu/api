@@ -1,19 +1,23 @@
-# ********************************************* #
-#                                               #
-#                      :|:||||||:|||:|:||:||::  #
-#  Makefile            |:|:|::|::||||::||:|:::  #
-#                      |::::|||:::||::::::|:||  #
-#                                               #
-#                                               #
-#  C20220222152916 |:::||                       #
-#  U20220222162218 ::|::|                       #
-#                                               #
-# ********************************************* #
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/23 11:38:52 by fde-capu          #+#    #+#              #
+#    Updated: 2022/02/23 12:43:17 by fde-capu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+ifndef OUTPUT
+.SILENT:
+endif
 
 NAME	=	api_client
-ARG		=	0.0.0.0
+ARGS	=	0.0.0.0
 SRCS	=	api_client.c
-HEAD	=	Makefile
+HEAD	=	Makefile api_client.h
 SHELL	=	/bin/sh
 CC		=	cc
 CCFLAGS	=	-Wall -Werror -Wextra -g
@@ -25,10 +29,10 @@ VALFLAG	=	--tool=memcheck \
 			--show-leak-kinds=all \
 			--track-origins=yes \
 			--show-reachable=yes
-all:		libft $(NAME)
+all:		$(NAME)
 libft:
-	cd ../libft && make && cd -
-$(NAME):	$(OBJS)
+	cd ../libft && $(MAKE) && cd -
+$(NAME):	libft $(OBJS)
 	$(CC) $(CCFLAGS) $(OBJS) -o $(NAME) $(CCLINKS)
 $(OBJS):	%.o : %.c $(HEAD)
 	$(CC) $(CCFLAGS) -o $@ -c $< $(CCLINKS)
@@ -39,8 +43,9 @@ fclean:		clean
 re:			fclean all
 rt:			re t
 vf:			all
-	$(VAL) $(VALFLAG) ./$(NAME)
+	$(VAL) $(VALFLAG) ./$(NAME) $(ARGS)
 t:			all
-	./$(NAME) $(ARG)
+	echo -e $(NAME) $(ARGS)
+	./$(NAME) $(ARGS)
 v:			all
-	$(VAL) ./$(NAME) $(ARG)
+	$(VAL) ./$(NAME) $(ARGS)

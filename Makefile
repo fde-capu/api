@@ -1,27 +1,27 @@
-# ********************************************* #
-#                                               #
-#                      :|:||||||:|||:|:||:||::  #
-#  Makefile            |:|:|::|::||||::||:|:::  #
-#                      |::::|||:::||::::::|:||  #
-#                                               #
-#                                               #
-#  C20220222153348 :::::|                       #
-#  U20220222162136 ||::::                       #
-#                                               #
-# ********************************************* #
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/23 11:45:09 by fde-capu          #+#    #+#              #
+#    Updated: 2022/02/23 12:09:31 by fde-capu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 ifndef OUTPUT
 .SILENT:
 endif
 
-all:	stop libft api_server api_client
+all:	libft api_server api_client
 libft:
 	cd libft && make
 api_server:
 	cd server && make
 api_client:
 	cd client && make
-start:	all
+start:	stop all
 	cd server && make start && cd ..
 stop:
 	cd server && make stop && cd ..
