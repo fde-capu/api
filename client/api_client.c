@@ -43,7 +43,7 @@ void shell_error(char *message)
 void call_server(char *line, char *address, int port)
 {
 	struct sockaddr_in remote_address;
-	char response[MAX_RESPONSE];
+	char *response = malloc(MAX_RESPONSE);
 	int client_socket;
 
 	printf(CLIENT_OUT "%s\n", line);
@@ -58,7 +58,7 @@ void call_server(char *line, char *address, int port)
 		return shell_error(ERROR CONNECTION_FAILED);
 	if (send(client_socket, line, strlen(line), 0) == -1)
 		return shell_error(ERROR SEND_FAILED);
-	if (recv(client_socket, &response, sizeof(response), 0) == -1)
+	if (recv(client_socket, response, MAX_RESPONSE, 0) == -1)
 		return shell_error(ERROR RECV_FAILED);
 	if (close(client_socket) == -1)
 		return shell_error(ERROR CLOSE_SOCKET_FAILED);
@@ -94,10 +94,8 @@ int main(int argc, char **argv)
 
 	if (!validate(argc, argv, &address, &port))
 		return die(ERROR INVALID_ARGUMENTS, 42, &address);
-
 	call_server("HI", address, port);
-
 	shell(address, port);
-
+	free(address);
 	return 0;
 }

@@ -42,3 +42,7 @@ re:
 	cd server && make re
 	cd client && make re
 	cd libft && make re
+vf:
+	cd server && make vf
+	cd client && make vf
+

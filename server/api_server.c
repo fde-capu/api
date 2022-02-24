@@ -30,10 +30,9 @@ int main(int argc, char **argv)
 //	fgets(response_data, 1024, html_data);
 
 	char *response_data = ft_str("Hello, world!");
+	char *http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 13\n\n");
 
-	char *http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 49\n\n");
-	http_header = ft_strcatxl(http_header, response_data);
-	printf("-->%s<--", http_header);
+	http_header = ft_strcatx(http_header, response_data);
 
 	int server_socket;
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -47,6 +46,7 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		client_socket = accept(server_socket, NULL, NULL);
+		printf("--> %s <--", http_header); fflush(stdout);
 		send(client_socket, http_header, strlen(http_header), 0);
 		close(client_socket);
 	}

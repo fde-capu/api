@@ -43,14 +43,14 @@ fclean:		clean
 re:			fclean all
 rt:			re t
 vf:			all
-	$(VAL) $(VALFLAG) ./$(NAME)
+	$(VAL) $(VALFLAG) ./$(NAME) $(ARGS)
 t:			all
 	echo "# $(NAME) $(ARGS)"
 	./$(NAME) $(ARGS)
 v:			all
-	$(VAL) ./$(NAME)
+	$(VAL) ./$(NAME) $(ARGS)
 start:		stop all
-	echo "# $(NAME) $(ARGS) &"
+	echo "# $(NAME) $(ARGS)"
 	./$(NAME) $(ARGS) &
 stop:
 	-pkill api_server
