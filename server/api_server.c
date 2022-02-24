@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		client_socket = accept(server_socket, NULL, NULL);
-		printf("--> %s <--", http_header); fflush(stdout);
+		printf(SERVER_SIGN "--> %s <--\n", http_header); fflush(stdout);
 		send(client_socket, http_header, strlen(http_header), 0);
 		close(client_socket);
 	}

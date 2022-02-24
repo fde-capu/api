@@ -47,7 +47,7 @@ void call_server(char *line, char *address, int port)
 	char *response = malloc(MAX_RESPONSE);
 	int client_socket;
 
-	printf(CLIENT_OUT "%s\n", line);
+	printf(CLIENT_SIGN " " CLIENT_OUT "%s\n", line);
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (client_socket == -1)
 		return shell_error(ERROR SOCKET_CREATION_FAIL, &response);
@@ -63,7 +63,7 @@ void call_server(char *line, char *address, int port)
 		return shell_error(ERROR RECV_FAILED, &response);
 	if (close(client_socket) == -1)
 		return shell_error(ERROR CLOSE_SOCKET_FAILED, &response);
-	printf(SERVER_IN "%s\n", response);
+	printf(CLIENT_SIGN " " SERVER_IN "%s\n", response);
 	free(response);
 	return ;
 }
@@ -75,7 +75,7 @@ void shell(char *address, int port)
 	size_t len = 0;
 	ssize_t nread;
 
-	printf(SHELL_MODE "\n");
+	printf(CLIENT_SIGN " " SHELL_MODE "\n");
 	stream = fdopen(0, "r");
 	if (stream == NULL)
 		exit(EXIT_FAILURE);

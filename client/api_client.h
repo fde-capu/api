@@ -34,6 +34,7 @@
 # define SHELL_MODE "Entering shell mode:"
 # define SERVER_IN ">"
 # define CLIENT_OUT "<"
+# define CLIENT_SIGN "(cli)"
 
 # define MAX_RESPONSE 4096
 

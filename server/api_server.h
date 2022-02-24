@@ -25,5 +25,6 @@
 # define MAX_RESPONSE 4096
 # define ERROR "Error: "
 # define INVALID_ARGUMENTS "Invalid arguments."
+# define SERVER_SIGN "(api)"
 
 #endif
