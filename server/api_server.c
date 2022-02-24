@@ -45,10 +45,15 @@ int main(int argc, char **argv)
 	int client_socket;
 	while (1)
 	{
-		client_socket = accept(server_socket, NULL, NULL);
+		struct sockaddr_in *communication_layer = calloc(1, sizeof(struct sockaddr_in));
+		client_socket = accept(server_socket, (struct sockaddr*)&communication_layer, (socklen_t *)&communication_layer->sin_addr.s_addr);
+		printf(SERVER_SIGN " Family: %d\n", communication_layer->sin_family);
+		printf(SERVER_SIGN " Port: %d\n", communication_layer->sin_port);
+		printf(SERVER_SIGN " in_addr: %d\n", communication_layer->sin_addr.s_addr);
 		printf(SERVER_SIGN "--> %s <--\n", http_header); fflush(stdout);
 		send(client_socket, http_header, strlen(http_header), 0);
 		close(client_socket);
+		free(communication_layer);
 	}
 	return 0;
 }
