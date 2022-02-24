@@ -29,10 +29,9 @@ int main(int argc, char **argv)
 //	char response_data[MAX_RESPONSE];
 //	fgets(response_data, 1024, html_data);
 
-	char *response_data = ft_str("Hello, world!");
-	char *http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 13\n\n");
-
-	http_header = ft_strcatx(http_header, response_data);
+	str http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 13\n\n");
+	str response_data = ft_str("Hello, world!");
+	str packet = ft_strcatx(http_header, response_data);
 
 	int server_socket;
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -42,11 +41,12 @@ int main(int argc, char **argv)
 	server_address.sin_addr.s_addr = INADDR_ANY;
 	bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 	listen(server_socket, 1);
+
 	int client_socket;
 	while (1)
 	{
-		struct sockaddr_in *communication_layer = calloc(1, sizeof(struct sockaddr_in));
-		client_socket = accept(server_socket, (struct sockaddr*)&communication_layer, (socklen_t *)&communication_layer->sin_addr.s_addr);
+		struct sockaddr_in *in_layer = calloc(1, sizeof(struct sockaddr_in));
+		client_socket = accept(server_socket, (struct sockaddr*)&in_layer, (socklen_t *)&in_layer->sin_addr.s_addr);
 		struct addrinfo hints;
 		memset(&hints, 0, sizeof(struct addrinfo));
 		hints.ai_family = AF_UNSPEC;
@@ -71,22 +71,22 @@ int main(int argc, char **argv)
 			if (i->ai_addr->sa_family == AF_INET)
 			{
 				struct sockaddr_in *p = (struct sockaddr_in *)i->ai_addr;
-				printf("Connection from: %s\n", inet_ntop(AF_INET, &p->sin_addr, str, sizeof(str)));
+				printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET, &p->sin_addr, str, sizeof(str)));
 			}
 			else if (i->ai_addr->sa_family == AF_INET6)
 			{
 				struct sockaddr_in6 *p = (struct sockaddr_in6 *)i->ai_addr;
-				printf("Connection from: %s\n", inet_ntop(AF_INET6, &p->sin6_addr, str, sizeof(str)));
+				printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET6, &p->sin6_addr, str, sizeof(str)));
 			}
 		}
 
-		printf(SERVER_SIGN " Family: %d\n", communication_layer->sin_family);
-		printf(SERVER_SIGN " Port: %d\n", ntohs(communication_layer->sin_port));
-		printf(SERVER_SIGN " in_addr: %d\n", communication_layer->sin_addr.s_addr);
-		printf(SERVER_SIGN "--> %s <--\n", http_header); fflush(stdout);
-		send(client_socket, http_header, strlen(http_header), 0);
+		printf(SERVER_SIGN " Family: %d\n", in_layer->sin_family);
+		printf(SERVER_SIGN " Port: %d\n", ntohs(in_layer->sin_port));
+		printf(SERVER_SIGN " in_addr: %d\n", in_layer->sin_addr.s_addr);
+		send(client_socket, packet, strlen(packet), 0);
 		close(client_socket);
-		free(communication_layer);
+		free(in_layer);
 	}
+
 	return 0;
 }
