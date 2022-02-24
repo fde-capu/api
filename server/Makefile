@@ -14,11 +14,12 @@ ifndef OUTPUT
 .SILENT:
 endif
 
-NAME	=	api_server
-ARGS	=	8001 $(POST_ARGS)
 ifdef DAEMON
 POST_ARGS =	&
 endif
+
+NAME	=	api_server
+ARGS	=	8001 $(POST_ARGS)
 SRCS	=	api_server.c
 HEAD	=	Makefile api_server.h
 SHELL	=	/bin/sh
@@ -54,6 +55,6 @@ v:			all
 	$(VAL) ./$(NAME) $(ARGS)
 start:		stop all
 	echo "# $(NAME) $(ARGS)"
-	./$(NAME) $(ARGS) &
+	./$(NAME) $(ARGS)
 stop:
 	-pkill api_server
