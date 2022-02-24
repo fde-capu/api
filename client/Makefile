@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:38:52 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 14:20:48 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/24 19:56:45 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ HEAD	=	Makefile api_client.h
 SHELL	=	/bin/sh
 CC		=	cc
 CCFLAGS	=	-Wall -Werror -Wextra -g
-CCLINKS	=	-L../libft -lft
+CCLINKS	=	-L../libft -lft -Qunused-arguments
 OBJS	=	$(SRCS:.c=.o)
 VAL		=	valgrind
 VALFLAG	=	--tool=memcheck \
@@ -29,7 +29,7 @@ VALFLAG	=	--tool=memcheck \
 			--show-leak-kinds=all \
 			--track-origins=yes \
 			--show-reachable=yes
-all:		$(NAME)
+all:		libft $(NAME)
 libft:
 	cd ../libft && $(MAKE) && cd -
 $(NAME):	libft $(OBJS)
