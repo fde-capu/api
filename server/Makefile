@@ -47,11 +47,13 @@ fclean:		clean
 re:			fclean all
 rt:			re t
 vf:			all
+	echo "# $(VAL) $(VALFLAG) ./$(NAME) $(ARGS)"
 	$(VAL) $(VALFLAG) ./$(NAME) $(ARGS)
 t:			all
 	echo "# $(NAME) $(ARGS)"
 	./$(NAME) $(ARGS)
 v:			all
+	echo "# $(VAL) ./$(NAME) $(ARGS)"
 	$(VAL) ./$(NAME) $(ARGS)
 start:		stop all
 	echo "# $(NAME) $(ARGS)"

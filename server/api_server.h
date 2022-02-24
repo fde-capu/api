@@ -30,7 +30,11 @@
 # define SERVER_SIGN "(api)"
 # define FAILEDADDRINGO "Could not get information about the client."
 # define COULD_NOT_ACCEPT "Something wrong when accepting socket."
+# define CLIENT_IN ">"
 # define RECEIVED "Received from client:"
+# define SERVER_UP "Server is up."
+# define COULD_NOT_BIND "Binding did not occur as expected."
+# define COULD_NOT_LISTEN "Could not listen."
 
 # define MAX_RESPONSE 4096
 # define RECV_FAILED "Failed to receive packet."

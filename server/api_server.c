@@ -51,9 +51,19 @@ int hints(char *port)
 	return 0;
 }
 
+void parse(str command)
+{
+	char **com = ft_split(command, ' ');
+	for (char **h = com; *h; h++)
+	{
+		say(*h, 0);
+	}
+	return ;
+}
+
 int main(int argc, char **argv)
 {
-	char *response = malloc(MAX_RESPONSE);
+	str peer_call = calloc(MAX_RESPONSE, 1);
 	char *reg = "\\d+";
 	if (!validate_args_regex(argc, argv, 2, 2, reg))
 		return say(ERROR INVALID_ARGUMENTS, 1);
@@ -73,21 +83,27 @@ int main(int argc, char **argv)
 	server_address.sin_family = AF_INET;
 	server_address.sin_port = htons(ft_atoi(argv[1]));
 	server_address.sin_addr.s_addr = INADDR_ANY;
-	bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
-	listen(server_socket, 1);
+
+	if (bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address)) == -1)
+		return say(ERROR COULD_NOT_BIND, 1);
+	if (listen(server_socket, 1) == -1)
+		return say(ERROR COULD_NOT_LISTEN, 1);
+	say(SERVER_UP, 0);
 
 	int client_socket;
 	while (1)
 	{
+		memset(peer_call, 0, MAX_RESPONSE);
 		struct sockaddr_in *in_layer = calloc(1, sizeof(struct sockaddr_in));
 
 		client_socket = accept(server_socket, (struct sockaddr*)&in_layer, (socklen_t *)&in_layer->sin_addr.s_addr);
 		if (client_socket == -1)
 		{ say(SERVER_SIGN " " COULD_NOT_ACCEPT, 0); continue ; }
-		if (recv(client_socket, response, MAX_RESPONSE, 0) == -1)
+		if (recv(client_socket, peer_call, MAX_RESPONSE, 0) == -1)
 		{ say(ERROR RECV_FAILED, 0); continue ; }
 		say(RECEIVED, 0);
-		printf ("%s", response);
+		printf(CLIENT_IN "%s", peer_call);
+		parse(peer_call);
 
 		hints(argv[1]);
 		printf(SERVER_SIGN " Family: %d\n", in_layer->sin_family);
