@@ -34,9 +34,10 @@ bool validate(int argc, char **argv, char **address, int *port)
 	return true;
 }
 
-void shell_error(char *message)
+void shell_error(char *message, char **response)
 {
 	printf("%s\n", message);
+	free(*response);
 	return ;
 }
 
@@ -49,20 +50,21 @@ void call_server(char *line, char *address, int port)
 	printf(CLIENT_OUT "%s\n", line);
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (client_socket == -1)
-		return shell_error(ERROR SOCKET_CREATION_FAIL);
+		return shell_error(ERROR SOCKET_CREATION_FAIL, &response);
 	remote_address.sin_family = AF_INET;
 	remote_address.sin_port = htons(port);
 	if (inet_aton(address, (struct in_addr *)&remote_address.sin_addr.s_addr) == 0)
-		return shell_error(ERROR INVALID_ADDRESS);
+		return shell_error(ERROR INVALID_ADDRESS, &response);
 	if (connect(client_socket, (struct sockaddr *)&remote_address, sizeof(remote_address)) == -1)
-		return shell_error(ERROR CONNECTION_FAILED);
+		return shell_error(ERROR CONNECTION_FAILED, &response);
 	if (send(client_socket, line, strlen(line), 0) == -1)
-		return shell_error(ERROR SEND_FAILED);
+		return shell_error(ERROR SEND_FAILED, &response);
 	if (recv(client_socket, response, MAX_RESPONSE, 0) == -1)
-		return shell_error(ERROR RECV_FAILED);
+		return shell_error(ERROR RECV_FAILED, &response);
 	if (close(client_socket) == -1)
-		return shell_error(ERROR CLOSE_SOCKET_FAILED);
+		return shell_error(ERROR CLOSE_SOCKET_FAILED, &response);
 	printf(SERVER_IN "%s\n", response);
+	free(response);
 	return ;
 }
 
