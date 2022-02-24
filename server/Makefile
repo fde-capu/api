@@ -25,7 +25,7 @@ HEAD	=	Makefile api_server.h
 SHELL	=	/bin/sh
 CC		=	cc
 CCFLAGS	=	-Wall -Werror -Wextra -g
-CCLINKS	=	-L../libft -lft -Qunused-arguments
+CCLINKS	=	-L../libft -lft # -Qunused-arguments
 OBJS	=	$(SRCS:.c=.o)
 VAL		=	valgrind
 VALFLAG	=	--tool=memcheck \

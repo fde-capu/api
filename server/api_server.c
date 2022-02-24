@@ -21,7 +21,7 @@ int die(char *message, int return_code)
 int main(int argc, char **argv)
 {
 	char *reg = "\\d+";
-	if (!validate_args_regex(argc, argv, 0, 3, reg))
+	if (!validate_args_regex(argc, argv, 2, 2, reg))
 		return die(ERROR INVALID_ARGUMENTS, 1);
 
 //	FILE *html_data;
