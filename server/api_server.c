@@ -12,17 +12,51 @@
 
 #include "api_server.h"
 
-int die(char *message, int return_code)
+int say(char *message, int return_code)
 {
-	printf("%s\n", message);
+	printf(SERVER_SIGN " %s\n", message);
 	return return_code;
+}
+
+int hints(char *port)
+{
+	struct addrinfo hints;
+	memset(&hints, 0, sizeof(struct addrinfo));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_DGRAM;
+	hints.ai_flags = AI_PASSIVE;
+	hints.ai_protocol = 0;
+	hints.ai_canonname = NULL;
+	hints.ai_addr = NULL;
+	hints.ai_next = NULL;
+	struct addrinfo *result;
+	struct addrinfo *i;
+	int s = getaddrinfo(NULL, port, &hints, &result);
+	if (s != 0)
+		return say(ERROR FAILEDADDRINGO, 0);
+	for(i = result; i != NULL; i = i->ai_next)
+	{
+		char str[INET6_ADDRSTRLEN];
+		if (i->ai_addr->sa_family == AF_INET)
+		{
+			struct sockaddr_in *p = (struct sockaddr_in *)i->ai_addr;
+			printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET, &p->sin_addr, str, sizeof(str)));
+		}
+		else if (i->ai_addr->sa_family == AF_INET6)
+		{
+			struct sockaddr_in6 *p = (struct sockaddr_in6 *)i->ai_addr;
+			printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET6, &p->sin6_addr, str, sizeof(str)));
+		}
+	}
+	return 0;
 }
 
 int main(int argc, char **argv)
 {
+	char *response = malloc(MAX_RESPONSE);
 	char *reg = "\\d+";
 	if (!validate_args_regex(argc, argv, 2, 2, reg))
-		return die(ERROR INVALID_ARGUMENTS, 1);
+		return say(ERROR INVALID_ARGUMENTS, 1);
 
 //	FILE *html_data;
 //	html_data = fopen("json-sample.json", "r");
@@ -46,40 +80,16 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		struct sockaddr_in *in_layer = calloc(1, sizeof(struct sockaddr_in));
-		client_socket = accept(server_socket, (struct sockaddr*)&in_layer, (socklen_t *)&in_layer->sin_addr.s_addr);
-		struct addrinfo hints;
-		memset(&hints, 0, sizeof(struct addrinfo));
-		hints.ai_family = AF_UNSPEC;
-		hints.ai_socktype = SOCK_DGRAM;
-		hints.ai_flags = AI_PASSIVE;
-		hints.ai_protocol = 0;
-		hints.ai_canonname = NULL;
-		hints.ai_addr = NULL;
-		hints.ai_next = NULL;
-		struct addrinfo *result;
-		struct addrinfo *i;
-		int s = getaddrinfo(NULL, argv[1], &hints, &result);
-		if (s != 0)
-		{
-			printf(SERVER_SIGN " " ERROR FAILEDADDRINGO);
-			return -1; //
-			continue ;
-		}
-		for(i = result; i != NULL; i = i->ai_next)
-		{
-			char str[INET6_ADDRSTRLEN];
-			if (i->ai_addr->sa_family == AF_INET)
-			{
-				struct sockaddr_in *p = (struct sockaddr_in *)i->ai_addr;
-				printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET, &p->sin_addr, str, sizeof(str)));
-			}
-			else if (i->ai_addr->sa_family == AF_INET6)
-			{
-				struct sockaddr_in6 *p = (struct sockaddr_in6 *)i->ai_addr;
-				printf(SERVER_SIGN " Connection from: %s\n", inet_ntop(AF_INET6, &p->sin6_addr, str, sizeof(str)));
-			}
-		}
 
+		client_socket = accept(server_socket, (struct sockaddr*)&in_layer, (socklen_t *)&in_layer->sin_addr.s_addr);
+		if (client_socket == -1)
+		{ say(SERVER_SIGN " " COULD_NOT_ACCEPT, 0); continue ; }
+		if (recv(client_socket, response, MAX_RESPONSE, 0) == -1)
+		{ say(ERROR RECV_FAILED, 0); continue ; }
+		say(RECEIVED, 0);
+		printf ("%s", response);
+
+		hints(argv[1]);
 		printf(SERVER_SIGN " Family: %d\n", in_layer->sin_family);
 		printf(SERVER_SIGN " Port: %d\n", ntohs(in_layer->sin_port));
 		printf(SERVER_SIGN " in_addr: %d\n", in_layer->sin_addr.s_addr);

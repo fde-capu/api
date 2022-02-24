@@ -29,5 +29,10 @@
 # define INVALID_ARGUMENTS "Invalid arguments."
 # define SERVER_SIGN "(api)"
 # define FAILEDADDRINGO "Could not get information about the client."
+# define COULD_NOT_ACCEPT "Something wrong when accepting socket."
+# define RECEIVED "Received from client:"
+
+# define MAX_RESPONSE 4096
+# define RECV_FAILED "Failed to receive packet."
 
 #endif

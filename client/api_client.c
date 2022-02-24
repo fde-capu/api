@@ -24,7 +24,6 @@ bool validate(int argc, char **argv, char **address, int *port)
 	char *valid_arguments_regex_pipesv = "\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?:\\d+";
 	if (!validate_args_regex(argc, argv, 2, 2, valid_arguments_regex_pipesv))
 		return false;
-
 	char **addr_and_port = ft_split(argv[1], ':');
 	*address = ft_str(addr_and_port[0]);
 	*port = ft_atoi(addr_and_port[1]);
