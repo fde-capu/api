@@ -20,11 +20,14 @@
 # include <sys/types.h>
 # include <netinet/in.h>
 # include <unistd.h>
+# include <netdb.h>
+# include <arpa/inet.h>
 # include "../libft/libft.h"
 
 # define MAX_RESPONSE 4096
 # define ERROR "Error: "
 # define INVALID_ARGUMENTS "Invalid arguments."
 # define SERVER_SIGN "(api)"
+# define FAILEDADDRINGO "Could not get information about the client."
 
 #endif
