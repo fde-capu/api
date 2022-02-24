@@ -22,7 +22,7 @@ api_server:
 api_client:
 	cd client && make
 start:	stop all
-	cd server && make start && cd ..
+	cd server && make DAEMON=1 start && cd ..
 stop:
 	cd server && make stop && cd ..
 t:	t-server t-client
@@ -43,6 +43,6 @@ re:
 	cd client && make re
 	cd libft && make re
 vf:
-	cd server && make vf
+	cd server && make DAEMON=1 vf
 	cd client && make vf
 

@@ -15,7 +15,10 @@ ifndef OUTPUT
 endif
 
 NAME	=	api_server
-ARGS	=	8001
+ARGS	=	8001 $(POST_ARGS)
+ifdef DAEMON
+POST_ARGS =	&
+endif
 SRCS	=	api_server.c
 HEAD	=	Makefile api_server.h
 SHELL	=	/bin/sh
