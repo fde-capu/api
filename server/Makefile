@@ -6,7 +6,7 @@
 #    By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 11:44:36 by fde-capu          #+#    #+#              #
-#    Updated: 2022/02/23 18:25:19 by fde-capu         ###   ########.fr        #
+#    Updated: 2022/02/24 19:09:12 by fde-capu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,9 @@ ARGS	=	8001 $(POST_ARGS)
 SRCS	=	api_server.c
 HEAD	=	Makefile api_server.h
 SHELL	=	/bin/sh
-CC		=	cc -L../libft
+CC		=	cc
 CCFLAGS	=	-Wall -Werror -Wextra -g
-CCLINKS	=	-L../libft -lft
+CCLINKS	=	-L../libft -lft -Qunused-arguments
 OBJS	=	$(SRCS:.c=.o)
 VAL		=	valgrind
 VALFLAG	=	--tool=memcheck \
