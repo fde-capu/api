@@ -35,6 +35,7 @@
 # define SERVER_UP "Server is up."
 # define COULD_NOT_BIND "Binding did not occur as expected."
 # define COULD_NOT_LISTEN "Could not listen."
+# define SYNTAX_ERROR "Syntas error."
 
 # define MAX_RESPONSE 4096
 # define RECV_FAILED "Failed to receive packet."

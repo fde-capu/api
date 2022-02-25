@@ -51,14 +51,22 @@ int hints(char *port)
 	return 0;
 }
 
-void parse(str command)
+str parse(str command)
 {
+	str out = ft_str("");
 	char **com = ft_split(command, ' ');
-	for (char **h = com; *h; h++)
+	char **h = com;
+	if (ft_stridentical_insensitive(*h, "get"))
 	{
-		say(*h, 0);
+		printf("HEYA!! That's a get!");
 	}
-	return ;
+
+	out = ft_x(out, DID_NOT_UNDERSTAND);
+
+	for (char **h = com; *h; h++)
+	{ say(*h, 0); }
+
+	return out;
 }
 
 int main(int argc, char **argv)
