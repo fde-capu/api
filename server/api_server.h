@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:50:25 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/25 12:30:06 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:09:17 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define COULD_NOT_BIND "Binding did not occur as expected."
 # define COULD_NOT_LISTEN "Could not listen."
 # define SYNTAX_ERROR "Syntas error."
+# define DID_NOT_UNDERSTAND "They did not understand."
 
 # define MAX_RESPONSE 4096
 # define RECV_FAILED "Failed to receive packet."

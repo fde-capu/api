@@ -6,7 +6,7 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:14 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 18:00:01 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:45:12 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ bool validate(int argc, char **argv, char **address, int *port)
 	return true;
 }
 
-void shell_error(char *message, char **response)
+int shell_error(char *message, char **response)
 {
 	printf("%s\n", message);
 	free(*response);
-	return ;
+	return 1;
 }
 
-void call_server(char *line, char *address, int port)
+int call_server(char *line, char *address, int port)
 {
 	struct sockaddr_in remote_address;
 	char *response = malloc(MAX_RESPONSE);
@@ -64,7 +64,7 @@ void call_server(char *line, char *address, int port)
 		return shell_error(ERROR CLOSE_SOCKET_FAILED, &response);
 	printf(CLIENT_SIGN " " SERVER_IN "%s\n", response);
 	free(response);
-	return ;
+	return 0;
 }
 
 void shell(char *address, int port)
@@ -80,7 +80,8 @@ void shell(char *address, int port)
 		exit(EXIT_FAILURE);
 	while ((nread = getline(&line, &len, stream)) != -1)
 	{
-		call_server(line, address, port);
+		if (call_server(line, address, port) != 0)
+			break ;
 		//		fwrite(line, nread, 1, stdout);
 	}
 	free(line);
@@ -95,8 +96,8 @@ int main(int argc, char **argv)
 
 	if (!validate(argc, argv, &address, &port))
 		return die(ERROR INVALID_ARGUMENTS, 42, &address);
-	call_server("HI", address, port);
-	shell(address, port);
+	if (call_server("Hi!", address, port) == 0)
+		shell(address, port);
 	free(address);
 	return 0;
 }

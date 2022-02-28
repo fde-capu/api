@@ -6,15 +6,17 @@
 /*   By: fde-capu <fde-capu@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 11:45:15 by fde-capu          #+#    #+#             */
-/*   Updated: 2022/02/23 18:24:54 by fde-capu         ###   ########.fr       */
+/*   Updated: 2022/02/27 22:23:59 by fde-capu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "api_server.h"
 
+json* data;
+
 int say(char *message, int return_code)
 {
-	printf(SERVER_SIGN " %s\n", message);
+	logger(2, SERVER_SIGN, message);
 	return return_code;
 }
 
@@ -55,16 +57,16 @@ str parse(str command)
 {
 	str out = ft_str("");
 	char **com = ft_split(command, ' ');
-	char **h = com;
-	if (ft_stridentical_insensitive(*h, "get"))
+	if (ft_stridentical_insensitive(com[0], "get"))
 	{
 		printf("HEYA!! That's a get!");
+		out = ft_x(out, json_get(data, com[1]));
 	}
 
-	out = ft_x(out, DID_NOT_UNDERSTAND);
+//	out = ft_x(out, DID_NOT_UNDERSTAND);
 
-	for (char **h = com; *h; h++)
-	{ say(*h, 0); }
+//	for (char **h = com; *h; h++)
+//	{ say(*h, 0); }
 
 	return out;
 }
@@ -80,6 +82,9 @@ int main(int argc, char **argv)
 //	html_data = fopen("json-sample.json", "r");
 //	char response_data[MAX_RESPONSE];
 //	fgets(response_data, 1024, html_data);
+
+	json* data = json_new();
+	(void)data;
 
 	str http_header = ft_str("HTTP/1.1 200 OK\nConnection: close\nContent-Length: 13\n\n");
 	str response_data = ft_str("Hello, world!");
@@ -114,9 +119,6 @@ int main(int argc, char **argv)
 		parse(peer_call);
 
 		hints(argv[1]);
-		printf(SERVER_SIGN " Family: %d\n", in_layer->sin_family);
-		printf(SERVER_SIGN " Port: %d\n", ntohs(in_layer->sin_port));
-		printf(SERVER_SIGN " in_addr: %d\n", in_layer->sin_addr.s_addr);
 		send(client_socket, packet, strlen(packet), 0);
 		close(client_socket);
 		free(in_layer);
