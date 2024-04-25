@@ -1,5 +1,6 @@
 This project builds a simple server running a CRUD layout.
-It has a concept to be able to manipulate any node for any type.
+
+It is a conceptual thing to be able to manipulate any node for any type.
 
 ```
 
