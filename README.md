@@ -1,3 +1,6 @@
+This project builds a simple server running a CRUD layout.
+It has a concept to be able to manipulate any node for any type.
+
 ```
 
 put [/][node[[/node][/node]...][/]
