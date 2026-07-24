@@ -1,0 +1,3 @@
+*.o
+client/api_client
+server/api_server
